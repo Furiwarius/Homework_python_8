@@ -1,15 +1,17 @@
 from tkinter import *
-from tkinter.messagebox import showerror, showwarning, showinfo
+from tkinter.messagebox import showwarning, showinfo, askyesno
+from delete_database_queries import delete_worker
+
 
 result_key=None          # результирующий ключ
 dialog_box_state = False # состояние окна диалога
+
 
 def clicked_choice(window, key):
     global result_key, dialog_box_state
     result_key=key
     dialog_box_state=False
     window.destroy()
-
 
 
 def dialog_window(dict_keys):
@@ -69,6 +71,25 @@ def creating_output_list(data_dict):
     return output_list
 
 
+def clicked_clear(listbox, clear_btn, del_btn, save_btn):
+    listbox.destroy()
+    clear_btn.destroy()
+    del_btn.destroy()
+    save_btn.destroy()
+
+
+def clicked_deletion(listbox, clear_btn, del_btn, save_btn, data_dict):
+    result = askyesno(title="Подтвержение операции", message="Вы действиетльно хотите удалить эти данные?")
+    if result: 
+        delete_worker(data_dict['worker'][0][0])
+        showinfo("Результат", "Данные удалены")
+        clicked_clear(listbox, clear_btn, del_btn, save_btn)
+    else: 
+        showinfo("Результат", "Операция отменена")
+    
+
+
+
 def showing_data(one_tab, data_dict):
     data_dict=selection_data_display(data_dict)
     if data_dict!=-1:
@@ -77,6 +98,14 @@ def showing_data(one_tab, data_dict):
         languages_var = StringVar(value=output_data)
         listbox = Listbox(one_tab, listvariable=languages_var, width=80, height=14)
         listbox.grid(column=0, row=5, columnspan=4)
-
         listbox.yview_scroll(number=1, what="units")
+
+        save_btn = Button(one_tab, text="Сохранить данные в файл", command=lambda: clicked_clear(listbox, clear_btn))  
+        save_btn.grid(column=6, row=7, padx=1, pady=1)
+        
+        deletion_btn = Button(one_tab, text="Удалить данные", command=lambda: clicked_deletion(listbox, clear_btn, save_btn, deletion_btn, data_dict))  
+        deletion_btn.grid(column=6, row=8, padx=1, pady=1)
+
+        clear_btn = Button(one_tab, text="Очистить", command=lambda: clicked_clear(listbox, clear_btn, save_btn, deletion_btn))  
+        clear_btn.grid(column=6, row=6, padx=1, pady=1)
 

@@ -1,5 +1,4 @@
 from tkinter import *
-from tkinter import ttk
 from tkinter import messagebox
 
 from search_database_queries import search_worker
