@@ -1,7 +1,7 @@
 from tkinter import *
 from tkinter.messagebox import showwarning, showinfo, askyesno
 from delete_database_queries import delete_worker
-
+from file_processing_module import save_file
 
 result_key=None          # результирующий ключ
 dialog_box_state = False # состояние окна диалога
@@ -43,7 +43,6 @@ def selection_data_display(data_dict):
         result_key = dialog_window(list(data_dict.keys()))
         result_data_dict = result_data_dict[result_key]
     elif len(result_data_dict)==0:
-        showwarning(title="Внимание", message="Такого работника нет")
         return -1
     return list(result_data_dict.values())[0]
 
@@ -88,6 +87,9 @@ def clicked_deletion(listbox, clear_btn, del_btn, save_btn, data_dict):
         showinfo("Результат", "Операция отменена")
     
 
+def clicked_save(save_data):
+    save_file(save_data)
+    showinfo("Результат", "Успешно сохранено")
 
 
 def showing_data(one_tab, data_dict):
@@ -100,12 +102,15 @@ def showing_data(one_tab, data_dict):
         listbox.grid(column=0, row=5, columnspan=4)
         listbox.yview_scroll(number=1, what="units")
 
-        save_btn = Button(one_tab, text="Сохранить данные в файл", command=lambda: clicked_clear(listbox, clear_btn))  
+        clear_btn = Button(one_tab, text="Очистить", command=lambda: clicked_clear(listbox, clear_btn, save_btn, deletion_btn))  
+        clear_btn.grid(column=6, row=6, padx=1, pady=1)
+
+        save_btn = Button(one_tab, text="Сохранить данные в файл", command=lambda: clicked_save(output_data))  
         save_btn.grid(column=6, row=7, padx=1, pady=1)
         
         deletion_btn = Button(one_tab, text="Удалить данные", command=lambda: clicked_deletion(listbox, clear_btn, save_btn, deletion_btn, data_dict))  
         deletion_btn.grid(column=6, row=8, padx=1, pady=1)
+    else:
+        showwarning(title="Внимание", message="Такого работника нет")
 
-        clear_btn = Button(one_tab, text="Очистить", command=lambda: clicked_clear(listbox, clear_btn, save_btn, deletion_btn))  
-        clear_btn.grid(column=6, row=6, padx=1, pady=1)
 
