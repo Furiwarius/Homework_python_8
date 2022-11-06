@@ -36,7 +36,7 @@ def interaction_interface():
 
     window = Tk()  
     window.title("Information system")  
-    window.geometry('800x500')  
+    window.geometry('800x500+500+300')  
 
     tab_control = ttk.Notebook(window)  
     find_tab = ttk.Frame(tab_control)  

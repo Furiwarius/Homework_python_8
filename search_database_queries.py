@@ -71,7 +71,7 @@ def search_worker(entry_value):
             cursor.execute(email_query)
             data_return = cursor.fetchall()
             if data_return!=[]:
-                records_dict['email'] = [data_formation(cursor, data_return[0][0])]
+                records_dict['email'] = data_formation(cursor, data_return[0][0])
             else:
                 print("В БД такого email нет")
 

@@ -26,7 +26,9 @@ def dialog_window(dict_keys):
     for key in dict_keys:
         add_tab_btn = Button(dialogue, text=key, command=lambda: clicked_choice(dialogue, key))  
         add_tab_btn.pack(anchor='c')
-    return result_key
+    while True:
+        if dialog_box_state==False:
+            return result_key
 
 
 def selection_data_display(data_dict):
@@ -37,8 +39,7 @@ def selection_data_display(data_dict):
             result_data_dict[key] = data_dict[key]
     if len(result_data_dict)>1:
         result_key = dialog_window(list(data_dict.keys()))
-        while dialog_box_state:
-            result_data_dict = result_data_dict[result_key]
+        result_data_dict = result_data_dict[result_key]
     elif len(result_data_dict)==0:
         showwarning(title="Внимание", message="Такого работника нет")
         return -1
@@ -68,15 +69,13 @@ def creating_output_list(data_dict):
     return output_list
 
 
-
-
 def showing_data(one_tab, data_dict):
     data_dict=selection_data_display(data_dict)
     if data_dict!=-1:
         output_data = creating_output_list(data_dict)
         
         languages_var = StringVar(value=output_data)
-        listbox = Listbox(one_tab, listvariable=languages_var, width=80)
+        listbox = Listbox(one_tab, listvariable=languages_var, width=80, height=14)
         listbox.grid(column=0, row=5, columnspan=4)
 
         listbox.yview_scroll(number=1, what="units")
